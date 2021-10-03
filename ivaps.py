@@ -262,7 +262,7 @@ def covariate_balance_test(aps, X, Z, W = None, saturated_aps = False, cov_type 
     if len(dep) > 1:
         mv_ols_joint = _MultivariateOLS(df[dep], df[exog]).fit()
         L = np.zeros((1,len(exog)))
-        L[:,1] = 1
+        L[:,0] = 1
         mv_test_res = mv_ols_joint.mv_test([("Z", L)])
     else:
         mv_test_res = None
