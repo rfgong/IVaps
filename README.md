@@ -1,8 +1,9 @@
 # IVaps
 
-This repository supports the Approximate Propensity Score (APS) instrumental variables approach introduced in "Algorithm is Experiment" (Narita and Yata, forthcoming). Computed in a simulation where continuous observables are randomly perturbed, APS is the probability of treatment assignment for an observation. APS is used as a control in the instrumental variables setup.
+This repository supports the Approximate Propensity Score (APS) instrumental variables approach introduced in "Algorithm is Experiment" (Narita and Yata, forthcoming). Computed by locally resampling continuous observables, APS is the probability of treatment assignment for an individual. APS is used as a control in the instrumental variables setup.
 
 Y<sub>i</sub> = &beta;<sub>0</sub> + &beta;<sub>1</sub> D<sub>i</sub> + &beta;<sub>2</sub> APS<sub>i</sub> + &epsilon;<sub>i</sub>
+
 D<sub>i</sub> = &gamma;<sub>0</sub> + &gamma;<sub>1</sub> Z<sub>i</sub> + &gamma;<sub>2</sub> APS<sub>i</sub> + &nu;<sub>i</sub>
 
 Python, R and Stata implementations are available for download.
@@ -27,7 +28,7 @@ result = estimate_treatment_effect(aps = df.aps, Y = df.tot_con_sus2020_07_31, Z
 result = covariate_balance_test(aps = df.aps, X = df[["occupancy","beds"]], Z = df.safety_net)
 ```
 
-See ivaps.html for detailed method documentation.
+See **ivaps.html** for detailed method documentation.
 
 ### R Example
 
@@ -53,7 +54,7 @@ result <- covariate_balance_test(data = df, aps = "aps", X = c("occupancy", "bed
 
 ### Stata Example
 
-See stata folder contents.
+See **stata** folder.
 
 #### References
 Yusuke Narita, Kohei Yata.
