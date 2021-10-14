@@ -8,6 +8,10 @@ D<sub>i</sub> = &gamma;<sub>0</sub> + &gamma;<sub>1</sub> Z<sub>i</sub> + &gamma
 
 Python, R and Stata implementations are available for download.
 
+# Example
+
+This section demonstrates code functionality in a simple policy context. Subjects that satisfy a cutoff rule using three variables are treated.
+
 ### Python Example
 
 ```python
