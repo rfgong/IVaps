@@ -49,7 +49,7 @@ predict <- function(X) {
 }
 
 # Estimate APS
-df$aps <- estimate_aps(predict = predict, X = df[c("sum_pctg_ssi_mdcd_days", "ucc_per_bed", "profit_margin")], C = c(1,2,3), S = 1000, delta = 0.05, nprocesses = 2)
+df$aps <- estimate_aps(predict = predict, X = df[c("sum_pctg_ssi_mdcd_days", "ucc_per_bed", "profit_margin")], C = c(1,2,3), S = 10000, delta = 0.05, nprocesses = 2)
 
 # Instrumental Variables
 result <- estimate_treatment_effect(data = df, aps = "aps", Y = "tot_con_sus2020_07_31", Z = "safety_net", D = "safety_dollars_adj")
