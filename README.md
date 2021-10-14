@@ -17,7 +17,7 @@ Y<sub>i</sub> = &beta;<sub>0</sub> + &beta;<sub>1</sub> D<sub>i</sub> + &beta;<s
 
 Y<sub>i</sub> is the outcome of interest, D<sub>i</sub> is the binary treatment assignment (possibly made by humans), and Z<sub>i</sub> is the binary treatment recommendation made by a known algorithm.
 
-Covariate balance of predetermined characteristics across recommended treatment groups, conditional on APS, can further establish the validity of estimated treatment effects.
+Covariate balance of predetermined characteristics, conditional on APS, can establish the comparability of recommended treatment groups.
 
 W<sub>i</sub> = &gamma;<sub>0</sub> + &gamma;<sub>1</sub> Z<sub>i</sub> + &gamma;<sub>2</sub> APS<sub>i</sub> + &eta;<sub>i</sub>
 
