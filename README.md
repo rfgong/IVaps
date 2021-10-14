@@ -31,6 +31,8 @@ This section demonstrates code functionality in a simple policy context. Subject
 
 See the paper's "Empirical Policy Application" for a discussion of the example results.
 
+Download **ivaps.html** for detailed method documentation.
+
 ### Python Example
 
 ```python
@@ -51,8 +53,6 @@ result = estimate_treatment_effect(aps = df.aps, Y = df.tot_con_sus2020_07_31, Z
 # Covariate Balance
 result = covariate_balance_test(aps = df.aps, X = df[["occupancy","beds"]], Z = df.safety_net)
 ```
-
-Download **ivaps.html** for detailed method documentation.
 
 ### R Example
 
