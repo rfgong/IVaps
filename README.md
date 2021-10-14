@@ -27,9 +27,7 @@ W<sub>i</sub> is a predetermined characteristic.
 
 # Example
 
-This section demonstrates code functionality in a simple policy context. Subjects that satisfy a cutoff rule using three variables are treated.
-
-See the paper's "Empirical Policy Application" for a discussion of the example results.
+This section demonstrates code functionality in a simple policy context. Subjects that satisfy a cutoff rule using three variables are treated. See the paper's "Empirical Policy Application" for a discussion of the example results.
 
 Download **ivaps.html** for detailed method documentation.
 
