@@ -15,7 +15,9 @@ from ivaps import *
 
 df = pd.read_stata("data/safety_net_elig.dta")
 
-# Estimate APS
+## Estimate APS
+
+# Treatment Assignment Function
 def predict(X):
     return ((X[:,0] >= 0.202) & (X[:,1] >= 25000) & (X[:,2] <= 0.03)).astype(int)
 
@@ -38,7 +40,9 @@ source("ivaps.R")
 
 df <- read_dta("data/safety_net_elig.dta")
 
-# Estimate APS
+## Estimate APS
+
+# Treatment Assignment Function
 predict <- function(X) {
   return(as.integer((X[, 1] >= 0.202) & (X[, 2] >= 25000) & (X[,3] <= 0.03)))
 }
