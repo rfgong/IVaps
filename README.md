@@ -23,7 +23,7 @@ W<sub>i</sub> = &gamma;<sub>0</sub> + &gamma;<sub>1</sub> Z<sub>i</sub> + &gamma
 
 W<sub>i</sub> is a predetermined characteristic.
 
-**Python, R and Stata implementations are available.**
+### Python, R and Stata implementations are available.
 
 # Example
 
