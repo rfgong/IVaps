@@ -15,12 +15,11 @@ from ivaps import *
 
 df = pd.read_stata("data/safety_net_elig.dta")
 
-## Estimate APS
-
-# Treatment Assignment Function
+# Your Treatment Assignment Function
 def predict(X):
     return ((X[:,0] >= 0.202) & (X[:,1] >= 25000) & (X[:,2] <= 0.03)).astype(int)
 
+# Estimate APS
 df["aps"] = estimate_aps(predict = predict, X = df[["sum_pctg_ssi_mdcd_days", "ucc_per_bed", "profit_margin"]], C = [0,1,2], S = 10000, delta = 0.05, nprocesses = 2)
 
 # Instrumental Variables
@@ -40,13 +39,12 @@ source("ivaps.R")
 
 df <- read_dta("data/safety_net_elig.dta")
 
-## Estimate APS
-
-# Treatment Assignment Function
+# Your Treatment Assignment Function
 predict <- function(X) {
   return(as.integer((X[, 1] >= 0.202) & (X[, 2] >= 25000) & (X[,3] <= 0.03)))
 }
 
+# Estimate APS
 df$aps <- estimate_aps(predict = predict, X = df[c("sum_pctg_ssi_mdcd_days", "ucc_per_bed", "profit_margin")], C = c(1,2,3), S = 1000, delta = 0.05, nprocesses = 2)
 
 # Instrumental Variables
