@@ -6,7 +6,7 @@ As stated in the paper's introduction: for each covariate value x, the Approxima
 
 APS<sub>i</sub> = <sup>1</sup>&frasl;<sub>S</sub> &sum;<sub>s=1,...,S</sub> A(X<sub>i,s</sub>)
 
-S is the number of simulation draws, A is the algorithm mapping covariates to treatment assignment, and X<sub>i,s</sub> is a locally resampled version of observation i's covariates.
+S is the number of independent simulation draws, A is the algorithm mapping covariates to treatment assignment, and X<sub>i,s</sub> is a locally resampled version of observation i's covariates.
 
 Treatment effects can be estimated by two-stage least squares (2SLS) where
 we regress the outcome on the treatment with the algorithm’s recommendation as an IV and APS as a control.
