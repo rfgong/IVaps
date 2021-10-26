@@ -6,7 +6,7 @@ from multiprocessing import Pool
 import numpy as np
 import pandas as pd
 
-def estimate_aps(predict, X, C, S = 100, delta = 0.1, nprocesses = 1):
+def estimate_aps(predict, X, C, S = 100, delta = 0.1, nprocesses = 1, chunksize = None):
     """Estimate APS for given dataset and prediction function
 
     Parameters
@@ -23,6 +23,8 @@ def estimate_aps(predict, X, C, S = 100, delta = 0.1, nprocesses = 1):
         Radius of sampling ball
     nprocesses: int, default: 1
         Number of processes used to parallelize APS estimation
+    chunksize: int, default: None
+        Task chunk size used to parallelize APS estimation
 
     Returns
     -----------
@@ -51,7 +53,7 @@ def estimate_aps(predict, X, C, S = 100, delta = 0.1, nprocesses = 1):
     c_std = np.std(X_c, axis=0)
 
     with Pool(processes=nprocesses) as pool:
-        return sum(pool.starmap(estimate_aps_helper, [(i, delta, X_c, c_std, X, C, predict) for i in range(S)]))/S
+        return sum(pool.starmap(estimate_aps_helper, [(i, delta, X_c, c_std, X, C, predict) for i in range(S)], chunksize=chunksize))/S
 
 def estimate_aps_helper(i, delta, X_c, c_std, X, C, predict):
     # Resample continuous features

@@ -55,7 +55,7 @@
 </dd>
 </dl>
 <dl class="simple">
-<dt>tuple(SystemResults, dict(X, dict(stat_label, value)))</dt><dd><p>Tuple containing the fitted SUR model and a dictionary containing results of covariate balance estimation for each covariate as well as the joint hypothesis.</p>
+<dt>Returns: tuple(SystemResults, dict(X, dict(stat_label, value)))</dt><dd><p>Tuple containing the fitted SUR model and a dictionary containing results of covariate balance estimation for each covariate as well as the joint hypothesis.</p>
 </dd>
 </dl>
 <p>This function estimates a system of Seemingly Unrelated Regression (SUR) as defined in the linearmodels package.</p>
@@ -63,7 +63,7 @@
 
 <dl class="py function">
 <dt id="ivaps.estimate_aps">
-<code class="sig-prename descclassname">ivaps.</code><code class="sig-name descname">estimate_aps</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predict</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">C</span></em>, <em class="sig-param"><span class="n">S</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">delta</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">nprocesses</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ivaps.estimate_aps" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ivaps.</code><code class="sig-name descname">estimate_aps</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predict</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">C</span></em>, <em class="sig-param"><span class="n">S</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">delta</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">nprocesses</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">chunksize</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ivaps.estimate_aps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimate APS for given dataset and prediction function</p>
 <dl class="simple">
 <dt>predict: function</dt><dd><p>Function taking a 2D design matrix and returning a 1D vector of predictions</p>
@@ -78,9 +78,11 @@
 </dd>
 <dt>nprocesses: int, default: 1</dt><dd><p>Number of processes used to parallelize APS estimation</p>
 </dd>
+<dt>chunksize: int, default: None</dt><dd><p>Task chunk size used to parallelize APS estimation</p>
+</dd>
 </dl>
 <dl class="simple">
-<dt>np.ndarray</dt><dd><p>Array of estimated APS for each observation in sample</p>
+<dt>Returns: np.ndarray</dt><dd><p>Array of estimated APS for each observation in sample</p>
 </dd>
 </dl>
 <p>Approximate propensity score (APS) is the average predicted class for a given observation over <span class="math notranslate nohighlight">\(S\)</span> samples.</p>
@@ -122,7 +124,7 @@ This transformation in undone prior to prediction.</p>
 </dd>
 </dl>
 <dl class="simple">
-<dt>tuple(IVResults, dict(D, dict(stat_label, value)))</dt><dd><p>Tuple containing the fitted IV model and a dictionary containing the results for the treatment effect.</p>
+<dt>Returns: tuple(IVResults, dict(D, dict(stat_label, value)))</dt><dd><p>Tuple containing the fitted IV model and a dictionary containing the results for the treatment effect.</p>
 </dd>
 </dl>
 <p>Treatment effect is estimated using IV estimation.</p>
