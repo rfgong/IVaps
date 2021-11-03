@@ -89,7 +89,7 @@ replace pred = 1 if (sum_pctg_ssi_mdcd_days_samp >= 0.202) & (ucc_per_bed_samp >
 */
 
 // Estimate APS
-estimate_aps "predict" "sum_pctg_ssi_mdcd_days ucc_per_bed profit_margin" 100 0.05 2
+estimate_aps "predict" "sum_pctg_ssi_mdcd_days ucc_per_bed profit_margin" 10000 0.05 2
 
 // Instrumental Variables
 ivreg2 tot_con_sus2020_07_31 (safety_dollars_adj = safety_net) aps if aps > 0 & aps <1, first robust
