@@ -77,7 +77,27 @@ result <- covariate_balance_test(data = df, aps = "aps", X = c("occupancy", "bed
 
 ### Stata Example
 
-See **stata** folder.
+```Stata
+do "ivaps.do"
+
+use "safety_net_elig.dta", clear
+
+// Your Treatment Assignment Rule (Separate Do File)
+/* predict.do
+replace pred = 0
+replace pred = 1 if (sum_pctg_ssi_mdcd_days_samp >= 0.202) & (ucc_per_bed_samp >= 25000) & (profit_margin_samp <= 0.03)
+*/
+
+// Estimate APS
+estimate_aps "predict" "sum_pctg_ssi_mdcd_days ucc_per_bed profit_margin" 100 0.05 2
+
+// Instrumental Variables
+ivreg2 tot_con_sus2020_07_31 (safety_dollars_adj = safety_net) aps if aps > 0 & aps <1, first robust
+
+// Covariate Balance
+mvreg occupancy beds = safety_net aps if aps > 0 & aps < 1
+test safety_net
+```
 
 #### References
 Yusuke Narita, Kohei Yata.
