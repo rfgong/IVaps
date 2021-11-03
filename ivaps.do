@@ -6,20 +6,20 @@ prog def estimate_aps
 	args pred C S delta nprocesses
 	/*    
 	pred: Do file
-        Produce predictions from data
+		Produce predictions from data
 		(1) resampled continuous variables will have "_samp" appended to their names
 		(2) must replace the variable "pred" with predictions
-    C: str
-        String with continuous variable names separated by spaces
-    S: int
-        Number of draws for each APS estimation
-    delta: float
-        Radius of sampling ball
-    nprocesses: int
-        Number of processes used to parallelize APS estimation
-    Returns
-    -----------
-    APS stored in "aps" variable
+	C: str
+		String with continuous variable names separated by spaces
+	S: int
+		Number of draws for each APS estimation
+	delta: float
+		Radius of sampling ball
+	nprocesses: int
+		Number of processes used to parallelize APS estimation
+	Returns
+	-----------
+	APS stored in "aps" variable
 	*/
 	quietly {
 		foreach varname in `C' {
