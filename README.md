@@ -25,18 +25,20 @@ W<sub>i</sub> is a predetermined characteristic.
 
 ### Python, R and Stata implementations are available.
 
+**Documentation is provided in code comments.** 
+
+**Use exactly 1 process for replicable results.**
+
 # Example
 
 This section demonstrates code functionality in a simple policy context. Subjects that satisfy a cutoff rule using three variables are treated. See the paper's "Empirical Policy Application" for a discussion of the example results.
-
-Documentation is provided in code comments. Download **ivaps.html** for additional method descriptions.
 
 ### Python Example
 
 ```python
 from ivaps import *
 
-df = pd.read_stata("data/safety_net_elig.dta")
+df = pd.read_stata("safety_net_elig.dta")
 
 # Your Treatment Assignment Rule
 def predict(X):
@@ -58,7 +60,7 @@ result = covariate_balance_test(aps = df.aps, X = df[["occupancy","beds"]], Z = 
 library(haven)
 source("ivaps.R")
 
-df <- read_dta("data/safety_net_elig.dta")
+df <- read_dta("safety_net_elig.dta")
 
 # Your Treatment Assignment Rule
 predict <- function(X) {
