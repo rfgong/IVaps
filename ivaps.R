@@ -5,7 +5,7 @@ library(car)
 library(lmtest)
 library(sandwich)
 
-estimate_aps <- function (predict, X, C, S = 100, delta = 0.1, nprocesses = 1) {
+estimate_aps <- function (predict, X, C, S = 100, delta = 0.1, seed = 0, nprocesses = 1) {
   # Parameters
   # -----------
   # predict: function
@@ -18,6 +18,8 @@ estimate_aps <- function (predict, X, C, S = 100, delta = 0.1, nprocesses = 1) {
   #     Number of draws for each APS estimation
   # delta: double, default: 0.1
   #     Radius of sampling ball
+  # seed: integer, default: 0
+  #     Seed for random number generator
   # nprocesses: integer, default: 1
   #     Number of processes used to parallelize APS estimation
   # Returns
@@ -25,6 +27,7 @@ estimate_aps <- function (predict, X, C, S = 100, delta = 0.1, nprocesses = 1) {
   # vector
   #     Vector of estimated APS for each observation in sample
   
+  set.seed(seed)
   X = as.matrix(X)
   X_c = X[, C]
   if (length(C) == 1) {
@@ -71,11 +74,15 @@ estimate_treatment_effect <- function (data, aps, Y, Z, D, W = NULL, cov_type = 
   
   obs = nrow(data)
   # Use only observations where aps is nondegenerate
-  data = subset(data, (eval(aps) != 0) & (eval(aps) != 1))
+  if (aps == "aps") {
+    data = subset(data, (aps != 0) & (aps != 1))
+  } else {
+    data = subset(data, (eval(parse(text=aps)) != 0) & (eval(parse(text=aps)) != 1))
+  }
   print(paste("We will fit on", nrow(data), "values out of", obs, "from the dataset for which the APS estimation is nondegenerate."))
   
   # Check for single non-degeneracy
-  single = length(unique(data[c(aps)][,1])) == 1
+  single = dim(unique(data[c(aps)]))[1] == 1
   
   if (!is.null(weights)) {
     weights = data[c(weights)][,1]
@@ -113,11 +120,15 @@ covariate_balance_test <- function (data, aps, X, Z, W = NULL, cov_type = "HC1")
   
   obs = nrow(data)
   # Use only observations where aps is nondegenerate
-  data = subset(data, (eval(aps) != 0) & (eval(aps) != 1))
+  if (aps == "aps") {
+    data = subset(data, (aps != 0) & (aps != 1))
+  } else {
+    data = subset(data, (eval(parse(text=aps)) != 0) & (eval(parse(text=aps)) != 1))
+  }
   print(paste("We will fit on", nrow(data), "values out of", obs, "from the dataset for which the APS estimation is nondegenerate."))
   
   # Check for single non-degeneracy
-  single = length(unique(data[c(aps)][,1])) == 1
+  single = dim(unique(data[c(aps)]))[1] == 1
   
   if (single) {
     results = lm(eval(paste(paste0("cbind","(",paste(X, collapse = ", "),")"), "~", paste(c(Z, aps, W), collapse = " + "), "-1")), data = data)

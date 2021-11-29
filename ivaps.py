@@ -6,7 +6,7 @@ from multiprocessing import Pool
 import numpy as np
 import pandas as pd
 
-def estimate_aps(predict, X, C, S = 100, delta = 0.1, nprocesses = 1, chunksize = None):
+def estimate_aps(predict, X, C, S = 100, delta = 0.1, seed = 0, nprocesses = 1, chunksize = None):
     """Estimate APS for given dataset and prediction function
 
     Parameters
@@ -21,6 +21,8 @@ def estimate_aps(predict, X, C, S = 100, delta = 0.1, nprocesses = 1, chunksize 
         Number of draws for each APS estimation
     delta: float, default: 0.1
         Radius of sampling ball
+    seed: int, default: 0
+        Seed for random number generator
     nprocesses: int, default: 1
         Number of processes used to parallelize APS estimation
     chunksize: int, default: None
@@ -30,34 +32,19 @@ def estimate_aps(predict, X, C, S = 100, delta = 0.1, nprocesses = 1, chunksize 
     -----------
     np.ndarray
         Array of estimated APS for each observation in sample
-
-    Notes
-    ------
-    Approximate propensity score (APS) is the average predicted class for a given observation over :math:`S` samples.
-
-    .. math::
-        p^s(X_i;\\delta) = \\frac{1}{S} \\sum_{s=1}^{S} Predict(X_i^s)
-
-    :math:`X_i^s` resamples continuous features of :math:`X_i`.
-    Discrete and categorical features are kept unchanged from :math:`X_i`.
-
-    Let :math:`X_{ci}` denote the vector of continuous features in :math:`X_i`.
-    :math:`X_{ci}^s` is drawn uniformly at random from a ball centered at :math:`X_{ci}` with radius :math:`\\delta`.
-
-    Continuous features are normalized to have mean zero and standard deviation one during the resampling step.
-    This transformation in undone prior to prediction.
     """
 
+    rng = np.random.default_rng(seed)
     X = np.array(X)
     X_c = X[:, C].astype(float)
     c_std = np.std(X_c, axis=0)
 
     with Pool(processes=nprocesses) as pool:
-        return sum(pool.starmap(estimate_aps_helper, [(i, delta, X_c, c_std, X, C, predict) for i in range(S)], chunksize=chunksize))/S
+        return sum(pool.starmap(estimate_aps_helper, [(i, delta, rng, X_c, c_std, X, C, predict) for i in range(S)], chunksize=chunksize))/S
 
-def estimate_aps_helper(i, delta, X_c, c_std, X, C, predict):
+def estimate_aps_helper(i, delta, rng, X_c, c_std, X, C, predict):
     # Resample continuous features
-    dev = np.random.uniform(-delta, delta, X_c.shape)
+    dev = rng.uniform(-delta, delta, X_c.shape)
     X_c_s = np.copy(X_c) + c_std * dev
     X_s = np.copy(X)
     X_s[:, C] = X_c_s
@@ -89,17 +76,6 @@ def estimate_treatment_effect(aps, Y, Z, D, W = None, saturated_aps = False, cov
     -----------
     tuple(IVResults, dict(D, dict(stat_label, value)))
         Tuple containing the fitted IV model and a dictionary containing the results for the treatment effect.
-
-    Notes
-    -----
-    Treatment effect is estimated using IV estimation.
-
-    .. math::
-        D_i = \\gamma_0(1-I) + \\gamma_1 Z_i + \\gamma_2 p^s(X_i;\\delta) + \\gamma_3 W_i + v_i
-    .. math::
-        Y_i = \\beta_0(1-I) + \\beta_1 D_i + \\beta_2 p^s(X_i;\\delta) + \\beta_3 W_i + \\epsilon_i
-
-    :math:`\\beta_1` is our causal estimate of the treatment effect. :math:`I` is an indicator for APS taking only a single nondegenerate value in the sample.
     """
 
     aps = np.array(aps)
@@ -192,10 +168,6 @@ def covariate_balance_test(aps, X, Z, W = None, saturated_aps = False, cov_type 
     -----------
     tuple(SystemResults, dict(X, dict(stat_label, value)))
         Tuple containing the fitted SUR model and a dictionary containing results of covariate balance estimation for each covariate as well as the joint hypothesis.
-
-    Notes
-    -----
-    This function estimates a system of Seemingly Unrelated Regression (SUR) as defined in the linearmodels package.
     """
 
     aps = np.array(aps)

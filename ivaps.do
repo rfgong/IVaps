@@ -31,7 +31,13 @@ prog def estimate_aps
 		gen aps = 0
 	}
 	parallel initialize `nprocesses', f
-	parallel, prog(estimate_aps_helper): estimate_aps_helper "`pred'" "`C'" `S' `delta'
+	if `nprocesses' == 1 {
+		// This seed may be modified
+		parallel, seed(0) prog(estimate_aps_helper): estimate_aps_helper "`pred'" "`C'" `S' `delta'
+	}
+	else {
+		parallel, prog(estimate_aps_helper): estimate_aps_helper "`pred'" "`C'" `S' `delta'
+	}
 end
 
 prog def estimate_aps_helper
