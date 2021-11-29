@@ -23,11 +23,9 @@ W<sub>i</sub> = &gamma;<sub>0</sub> + &gamma;<sub>1</sub> Z<sub>i</sub> + &gamma
 
 W<sub>i</sub> is a predetermined characteristic.
 
-### Python, R and Stata implementations are available.
+# Python, R and Stata implementations are available.
 
-**Documentation is provided in code comments.** 
-
-**Use exactly 1 process for replicable results.**
+Documentation is provided in code comments. **Use exactly 1 process for perfectly replicable results.**
 
 # Example
 
@@ -45,7 +43,7 @@ def predict(X):
     return ((X[:,0] >= 0.202) & (X[:,1] >= 25000) & (X[:,2] <= 0.03)).astype(int)
 
 # Estimate APS
-df["aps"] = estimate_aps(predict = predict, X = df[["sum_pctg_ssi_mdcd_days", "ucc_per_bed", "profit_margin"]], C = [0,1,2], S = 10000, delta = 0.05, nprocesses = 2)
+df["aps"] = estimate_aps(predict = predict, X = df[["sum_pctg_ssi_mdcd_days", "ucc_per_bed", "profit_margin"]], C = [0,1,2], S = 10000, delta = 0.05, nprocesses = 1)
 
 # Instrumental Variables
 result = estimate_treatment_effect(aps = df.aps, Y = df.tot_con_sus2020_07_31, Z = df.safety_net, D = df.safety_dollars_adj)
@@ -68,7 +66,7 @@ predict <- function(X) {
 }
 
 # Estimate APS
-df$aps <- estimate_aps(predict = predict, X = df[c("sum_pctg_ssi_mdcd_days", "ucc_per_bed", "profit_margin")], C = c(1,2,3), S = 10000, delta = 0.05, nprocesses = 2)
+df$aps <- estimate_aps(predict = predict, X = df[c("sum_pctg_ssi_mdcd_days", "ucc_per_bed", "profit_margin")], C = c(1,2,3), S = 10000, delta = 0.05, nprocesses = 1)
 
 # Instrumental Variables
 result <- estimate_treatment_effect(data = df, aps = "aps", Y = "tot_con_sus2020_07_31", Z = "safety_net", D = "safety_dollars_adj")
@@ -91,7 +89,7 @@ replace pred = 1 if (sum_pctg_ssi_mdcd_days_samp >= 0.202) & (ucc_per_bed_samp >
 */
 
 // Estimate APS
-estimate_aps "predict" "sum_pctg_ssi_mdcd_days ucc_per_bed profit_margin" 10000 0.05 2
+estimate_aps "predict" "sum_pctg_ssi_mdcd_days ucc_per_bed profit_margin" 10000 0.05 1
 
 // Instrumental Variables
 ivreg2 tot_con_sus2020_07_31 (safety_dollars_adj = safety_net) aps if aps > 0 & aps <1, first robust
